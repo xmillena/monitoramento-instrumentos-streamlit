@@ -105,7 +105,6 @@ def main():
     st.title(" Monitoramento dos Instrumentos de Planejamento e Gestão em Saúde no Maranhão 📈")
     st.markdown("---")
     
-    # Inicializa o estado da sessão (necessário para os botões)
     if 'instrumento_selecionado' not in st.session_state:
         st.session_state['instrumento_selecionado'] = "Plano de Saúde"
 

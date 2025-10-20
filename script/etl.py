@@ -1,7 +1,6 @@
 import pandas as pd
 from typing import Dict, List, Optional
 import os
-#pesquisar sobre os 
 
 
 SCHEMA_MAPPING = {
@@ -36,14 +35,17 @@ def unify_data(df_list):
     return df_concat
 
 """Limpeza dos dados"""
-def transform(df: pd.DataFrame, col_mapping: Dict[str, str], new_cols: Optional[List[tuple]] = None) -> pd.DataFrame:
+def transform(df: pd.DataFrame, col_mapping: Dict[str, str], new_cols: Optional[List[tuple]] ) -> pd.DataFrame:
     if df is None:
         return None
     
     # Renomeação das colunas
     df_transformed = df.rename(columns=col_mapping)
+    df_transformed['ANO'] = df_transformed['ANO'].astype(str)
+    df_transformed['ANO'] = df_transformed['ANO'].str.replace(r'\.0$', '', regex=True)
+    df_transformed['ANO'] = df_transformed['ANO'].replace('nan', '')
+    
 
-    # Adicionar novas colunas com valor padrao
     if new_cols:
         for col_name, default_value in new_cols:
             if col_name not in df_transformed.columns:
@@ -52,16 +54,15 @@ def transform(df: pd.DataFrame, col_mapping: Dict[str, str], new_cols: Optional[
 
 
     final_columns = list(col_mapping.values())
-    valid_final_columns = [col for col in final_columns if col in df_transformed.columns]
+
 
     if new_cols:
         new_names = [name for name, _ in new_cols]
-        # Adiciona novas colunas que foram criadas, garantindo que não estejam duplicadas
+        # Adiciona novas colunas que foram criadas
         final_columns.extend([n for n in new_names if n not in final_columns])
     
-    df_final = df_transformed[valid_final_columns]
+    df_final = df_transformed[final_columns]
     
-    print("Transformação de esquema genérica concluída.")
     print(df_transformed.columns)
     return df_final
 

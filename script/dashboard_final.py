@@ -117,11 +117,6 @@ def main():
     
     df_filtrado = create_filters(df_dados)
         
-    df_dados = load_prep_data()
-    if df_dados.empty:
-        st.warning("Não há dados válidos para exibição.")
-        return
-    
     show_df(df_filtrado)
 
 

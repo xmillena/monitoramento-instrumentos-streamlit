@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 from etl import run_pipeline 
 import os
 
@@ -42,8 +41,6 @@ def load_prep_data():
             
     try:
         df = pd.read_csv(OUTPUT_FILE, sep=';', encoding='utf-8-sig')
-        #df['ANO'] = df['ANO'].astype(str)
-
         return df
     
     except Exception as e: 
@@ -81,6 +78,17 @@ def show_df(df):
     df_instrumento= df_instrumento.drop(columns = ["DATA_PROCESSAMENTO"])
     st.dataframe(df_instrumento, use_container_width=True,height=700,)
 
+def create_filters(df):
+    st.sidebar.header("Selecione o município")
+
+    municipio_list = ['Todos'] + sorted(df['MUNICIPIO'].dropna().unique().tolist())
+    municipio_selecionado = st.sidebar.selectbox('Município', municipio_list)
+
+    if municipio_selecionado != 'Todos':
+        df = df[df['MUNICIPIO'] == municipio_selecionado].copy()
+
+    return df
+
      
 def main():
     
@@ -88,57 +96,6 @@ def main():
     if df_dados.empty:
         st.warning("Não há dados válidos para exibição.")
         return
-    st.markdown(
-    """
-    <style>
-        [data-testid="stMultiSelect"] {
-            width: 100% !important;
-        }
-
-        /* container dos chips */
-        [data-testid="stMultiSelect"] .st-bh {
-            flex-wrap: wrap !important;
-            row-gap: 4px !important;
-        }
-
-        /* chip individual */
-        [data-testid="stMultiSelect"] .st-bh .st-bu {
-            display: flex !important;
-            align-items: center !important;
-            white-space: normal !important;
-            overflow: visible !important;
-            text-overflow: clip !important;
-            max-width: none !important;
-            height: auto !important;
-            min-width: fit-content !important;
-        }
-
-        /* texto dentro do chip */
-        [data-testid="stMultiSelect"] .st-bh .st-bu div {
-            white-space: normal !important;
-            overflow: visible !important;
-            text-overflow: clip !important;
-            max-width: none !important;
-            line-height: 1.2 !important;
-        }
-
-        /* botão de remover (x) */
-        [data-testid="stMultiSelect"] .st-bh .st-bu button {
-            flex-shrink: 0 !important;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-    lista_municipios = sorted(df_dados['MUNICIPIO'].dropna().unique().tolist())
-    
-    municipios_selecionados = st.sidebar.multiselect(
-    "Selecione o(s) município(s):",
-    options=lista_municipios,
-    default=lista_municipios
-)
-    
-    df_filtrado = df_dados[df_dados['MUNICIPIO'].isin(municipios_selecionados)]
 
     st.set_page_config(
     page_title="Monitoramento de Instrumentos",
@@ -156,6 +113,9 @@ def main():
         data_atualizacao = pd.to_datetime(df_dados['DATA_PROCESSAMENTO'], errors='coerce').max()
         data_atualizacao = data_atualizacao.strftime("%d/%m/%Y")
         st.info(f"**📅 Última atualização da planilha:** {data_atualizacao}")
+ 
+    
+    df_filtrado = create_filters(df_dados)
         
     df_dados = load_prep_data()
     if df_dados.empty:

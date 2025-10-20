@@ -51,7 +51,6 @@ def load_prep_data():
 
 def show_df(df):
     instrumento_selecionado = st.session_state.get('instrumento_selecionado', "Plano de Saúde")
-    st.subheader(f"Status do Instrumento: {instrumento_selecionado}")
     cols = st.columns(6)
 
     for i, (nome, tipo) in enumerate(INSTRUMENTOS.items()):

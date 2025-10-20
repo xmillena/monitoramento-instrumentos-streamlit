@@ -41,11 +41,7 @@ def load_prep_data():
             
     try:
         df = pd.read_csv(OUTPUT_FILE, sep=';', encoding='utf-8-sig')
-<<<<<<< HEAD
-=======
 
->>>>>>> 25ec860a503836475b8e9594c8e03942350ce4cb
-        return df
     
     except Exception as e: 
         st.error(f'Erro ao ler arquivo CSV: {e}')

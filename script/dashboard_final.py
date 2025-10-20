@@ -41,7 +41,6 @@ def load_prep_data():
             
     try:
         df = pd.read_csv(OUTPUT_FILE, sep=';', encoding='utf-8-sig')
-        #df['ANO'] = df['ANO'].astype(str)
 
         return df
     

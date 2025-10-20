@@ -64,7 +64,7 @@ def show_df(df):
 
     #Tabela Detalhada para o Instrumento Selecionado
     st.markdown("---")
-    st.subheader(f"Dados Detalhados: {instrumento_selecionado}")
+    st.subheader(instrumento_selecionado)
     
     # Filtra o DataFrame apenas para o instrumento selecionado
     df_instrumento = df[df['INSTRUMENTO'] == instrumento_selecionado].copy()
@@ -103,7 +103,7 @@ def main():
     layout="wide",
     initial_sidebar_state="expanded")
 
-    st.title(" Monitoramento dos Instrumentos de Planejamento e Gestão em Saúde no Maranhão 📈")
+    st.title(" Monitoramento dos Instrumentos de Planejamento e Gestão em Saúde no Maranhão")
     st.markdown("---")
     
     if 'instrumento_selecionado' not in st.session_state:
@@ -112,7 +112,7 @@ def main():
     if 'DATA_PROCESSAMENTO' in df_dados.columns and not df_dados.empty:
         data_atualizacao = pd.to_datetime(df_dados['DATA_PROCESSAMENTO'], errors='coerce').max()
         data_atualizacao = data_atualizacao.strftime("%d/%m/%Y")
-        st.info(f"**📅 Última atualização da planilha:** {data_atualizacao}")
+        st.info(f"**Última atualização da planilha:** {data_atualizacao}")
  
     
     df_filtrado = create_filters(df_dados)

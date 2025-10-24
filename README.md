@@ -26,5 +26,5 @@ O dashboard oferece as seguintes funcionalidades principais:
 Aqui está uma prévia do dashboard em execução:
 
 <br>
-<img width="1897" height="773" alt="image" src="<img width="1886" height="787" alt="image" src="https://github.com/user-attachments/assets/33dbcd70-b7de-4810-b6ac-d9dac0b7428f" />
+<img width="1897" height="773" alt="image" src="https://github.com/user-attachments/assets/33dbcd70-b7de-4810-b6ac-d9dac0b7428f" />
 <br>

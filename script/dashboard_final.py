@@ -1,29 +1,21 @@
 import streamlit as st
 import pandas as pd
-from etl import run_pipeline 
+from etl_Copia import run_pipeline 
 import os
 
 
 # Configuração de saída
+
 
 OUTPUT_DIR = 'script'
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'dados_final.csv')
 
 # Configuração da fonte (input)
 RAW_DATA_DIR = 'raw_data'
-INPUT_FILE1 = os.path.join(RAW_DATA_DIR, 'extracao_2025-10-16 (1).csv')
-INPUT_FILE2 = os.path.join(RAW_DATA_DIR, 'extracao_2025-10-16.csv')
+INPUT_FILE = os.path.join(RAW_DATA_DIR, 'extracao_2025-10-31.csv')
 
 
 # Definição dos instrumentos
-INSTRUMENTOS = {
-    "Plano de Saúde": "primary", 
-    "Programação Anual de Saúde": "secondary", 
-    "1º RDQA": "secondary", 
-    "2º RDQA": "secondary",
-    "3º RDQA": "secondary",
-    "RAG": "secondary"
-}
 
 @st.cache_data
 def load_prep_data():
@@ -32,7 +24,7 @@ def load_prep_data():
         # Se o arquivo não existe, roda o ETL antes de tentar carregar
         with st.spinner("Carregando arquivos..."):
             try:
-                run_pipeline(INPUT_FILE1, INPUT_FILE2, OUTPUT_FILE)
+                run_pipeline(INPUT_FILE, OUTPUT_FILE)
             except Exception as e:
                 st.error(f'Falha no carregamento: {e}')
                 return pd.DataFrame() # Retorna um dataframe vazio se a execução falhar
@@ -87,6 +79,8 @@ def show_df(df):
     st.markdown("---")
 
     df_sem_plano = df[df['INSTRUMENTO'] != 'Plano de Saúde'].copy()
+
+
     
     # Converter ANO para inteiro
     df_sem_plano['ANO'] = df_sem_plano['ANO'].astype(float).astype(int)

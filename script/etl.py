@@ -79,4 +79,3 @@ def run_pipeline(file_path, output_file):
     print("Pipeline ETL Concluído")
 
     return output_file
-

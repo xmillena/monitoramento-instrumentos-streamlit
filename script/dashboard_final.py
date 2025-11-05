@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from etl_Copia import run_pipeline 
+from etl import run_pipeline 
 import os
 
 
